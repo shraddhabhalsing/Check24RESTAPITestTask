@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+<style>
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: 69px;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+} 
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+} 
+
+body.theme-light code {
+    color: #000000!important;
+} 
+
+</style>
+</head>
+<body class="">
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">3</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">3</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab">
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-2 text-center">Newman Run Dashboard</h1>
+   <h5 class="text-center">Thursday, 22 April 2021 12:35:12</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">14</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">3</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> Check24APITest<br>
+                
+                
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 938ms<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 30.11KB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 131ms<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">3</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">3</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>Assertions</td>
+                        <td class="text-center">14</td>
+                        <td class="text-center">3</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+                
+                    <div class="btn-group float-right" role="group" aria-label="Button Group">
+                        <button id="openAllFailed" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 185px;">Expand All Failed Tests</button>
+                    </div>
+                    <br>
+                    <br>
+
+                    <div class="alert alert-danger text-uppercase text-center">
+                        <h4>Showing 3 Failures</h4>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                    <div class="card-deck">
+                        <div class="card border-danger">
+                            <div class="card-header bg-danger">
+                                <a data-toggle="collapse" href="#" data-target="#fails-collapse-241fb16f-821a-4321-b7d8-6afee5129e97" aria-expanded="false" aria-controls="collapse" id="fails-241fb16f-821a-4321-b7d8-6afee5129e97" class="collapsed text-white z-block">
+                                    Iteration 1 - AssertionError - New Folder - VerifyResponseForProductId <i class="float-lg-right fa fa-chevron-down" style="padding-top:5px;"></i>
+                                </a>
+                            </div>
+                            <div id="fails-collapse-241fb16f-821a-4321-b7d8-6afee5129e97" class="collapse" aria-labelledby="fails-241fb16f-821a-4321-b7d8-6afee5129e97">
+                            <div class="card-body">
+                                <h5 ><strong>Failed Test:</strong> Status code name has string</h5>
+                            <hr>
+                            <h5 class="card-title text-uppercase text-white text-center bg-danger">Assertion Error Message</h5>
+                            <div>
+                                <pre><code >expected response to have status reason &#x27;OK&#x27; but got &#x27;200&#x27;</code></pre>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                    <div class="card-deck">
+                        <div class="card border-danger">
+                            <div class="card-header bg-danger">
+                                <a data-toggle="collapse" href="#" data-target="#fails-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88" aria-expanded="false" aria-controls="collapse" id="fails-a7996a63-1d46-4d81-a96f-7a9c8efeca88" class="collapsed text-white z-block">
+                                    Iteration 1 - AssertionError - New Folder - VerifyResponsewithInvalidResource <i class="float-lg-right fa fa-chevron-down" style="padding-top:5px;"></i>
+                                </a>
+                            </div>
+                            <div id="fails-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88" class="collapse" aria-labelledby="fails-a7996a63-1d46-4d81-a96f-7a9c8efeca88">
+                            <div class="card-body">
+                                <h5 ><strong>Failed Test:</strong> Status code name has string</h5>
+                            <hr>
+                            <h5 class="card-title text-uppercase text-white text-center bg-danger">Assertion Error Message</h5>
+                            <div>
+                                <pre><code >expected response to have status reason &#x27;Not Found&#x27; but got &#x27;404&#x27;</code></pre>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                    <div class="card-deck">
+                        <div class="card border-danger">
+                            <div class="card-header bg-danger">
+                                <a data-toggle="collapse" href="#" data-target="#fails-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4" aria-expanded="false" aria-controls="collapse" id="fails-526a77a5-222a-4a07-b337-ed667b12f5d4" class="collapsed text-white z-block">
+                                    Iteration 1 - AssertionError - New Folder - VerifyResponseForNoContent <i class="float-lg-right fa fa-chevron-down" style="padding-top:5px;"></i>
+                                </a>
+                            </div>
+                            <div id="fails-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4" class="collapse" aria-labelledby="fails-526a77a5-222a-4a07-b337-ed667b12f5d4">
+                            <div class="card-body">
+                                <h5 ><strong>Failed Test:</strong> Status code name has string</h5>
+                            <hr>
+                            <h5 class="card-title text-uppercase text-white text-center bg-danger">Assertion Error Message</h5>
+                            <div>
+                                <pre><code >expected response to have status reason &#x27;No Content&#x27; but got &#x27;204&#x27;</code></pre>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+            
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="showOnlyFailures" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width:160px;">Show Failed Iterations</button>
+                <button id="openAll" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Folders</button>
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <nav class="table-responsive">
+        <ul class="nav single-line-tabs" id="iterationList">
+        </ul>
+        </nav>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+        <a data-toggle="collapse" href="#" data-target="#folder-collapse-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0" aria-expanded="false" aria-controls="collapse" id="folder-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0" class="collapsed text-dark z-block">
+        <i class="fas fa-info-circle float-left resultsInfoPass"  style="color: #c24a3f; padding-top: 4px;" style="color: #c24a3f; padding-top: 4px;" style="color: #c24a3f; padding-top: 4px;"></i>
+            New Folder - 3 Requests in the folder<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+        </a>
+        </div>
+        <div id="folder-collapse-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0" class="collapse" aria-labelledby="folder-42ecd785-5a9e-4916-bacd-c7dc2e71c53d">
+            <div id="folder-241fb16f-821a-4321-b7d8-6afee5129e97" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-danger iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-241fb16f-821a-4321-b7d8-6afee5129e97" aria-expanded="false" aria-controls="collapse" id="requests-241fb16f-821a-4321-b7d8-6afee5129e97" class="collapsed text-white z-block">
+                    Iteration: 1 - VerifyResponseForProductId <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-241fb16f-821a-4321-b7d8-6afee5129e97" class="collapse" aria-labelledby="requests-241fb16f-821a-4321-b7d8-6afee5129e97">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://finanzen.check24.de/accounts/r/frs/productInfo/kreditkarte/200007" target="_blank">https://finanzen.check24.de/accounts/r/frs/productInfo/kreditkarte/200007</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - 200</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 290ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 30.05KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-danger" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>80 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td>PostmanRuntime/7.26.10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td>*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td>no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td>fdb71eee-8ed0-4b2f-b2c9-0b0855fe08c1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td>finanzen.check24.de</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td>gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td>keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">date</td>
+                                                    <td>Thu, 22 Apr 2021 10:35:11 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">server</td>
+                                                    <td>Apache</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">cache-control</td>
+                                                    <td>max-age&#x3D;0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">expires</td>
+                                                    <td>Thu, 22 Apr 2021 10:35:11 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">vary</td>
+                                                    <td>User-Agent</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">transfer-encoding</td>
+                                                    <td>chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">content-type</td>
+                                                    <td>application/json;charset&#x3D;UTF-8</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-606386d7-b6e6-471a-93dd-c7885c2a53c6" class="prettyPrint">{
+          &quot;productId&quot; : 0,
+          &quot;tabs&quot; : {
+            &quot;general&quot; : {
+              &quot;tabName&quot; : &quot;Allgemein&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;general&quot; : {
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Kartenanbieter&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Verschiedene Anbieter/Banken bieten Kreditkarten an. Diese unterscheiden sich im Leistungsumfang sowie in der Jahresgebühr.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;Barclaycard&quot;,
+                      &quot;featuredDetail&quot; : true
+                    }, {
+                      &quot;label&quot; : &quot;Kartenname&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Banken bieten mehrere Kreditkarten mit unterschiedlichem Leistungsumfang an. Sie können diese am Kartennamen unterscheiden.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;Barclaycard Visa&quot;,
+                      &quot;featuredDetail&quot; : true
+                    }, {
+                      &quot;label&quot; : &quot;Kartensystem&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Das Kreditkartensystem steht für die Organisation, von der die Kreditkarte herausgegeben wird. Die gängigsten Herausgeber in Deutschland sind VISA und MasterCard.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;Visa&quot;,
+                      &quot;featuredDetail&quot; : true
+                    }, {
+                      &quot;label&quot; : &quot;Kartentyp&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Der Kreditkartentyp beschreibt die Abrechnung der Kreditkartenumsätze durch den Kreditkartenanbieter. Die unterschiedlichen Kartentypen sind:\nCharge-Karte: Umsätze werden einmal im Monat per Lastschrift von Ihrem Girokonto abgebucht.\nCredit-Karte: Die Kreditkartenumsätze können in Raten meist unter Einhaltung einer Mindestrate und Zahlung eines Sollzins beglichen werden. Meist kann der Kunde aber auch auf eine Teilzahlung verzichten und die Umsätze vollständig vom Konto abbuchen lassen. Dann fallen keine Zinsen an und die Karte kann wie eine Charge-Karte genutzt werden.\nDebit-Karte: Kreditkartenumsätze werden taggenau vom Girokonto gebucht.\nPrepaid-Karte: Die Kreditkarte muss mit einem Guthaben aufgeladen werden, d.h. es muss ein Geldbetrag auf das Kartenkonto überwiesen werden, um sie verwenden zu können.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;Charge/Credit&quot;,
+                      &quot;featuredDetail&quot; : true
+                    }, {
+                      &quot;label&quot; : &quot;Girokonto&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Einige Kreditkarten können nur gemeinsam mit einem Girokonto bei der jeweiligen Bank abgeschlossen werden. Diese Girokonten sind meistens kostenlos.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;nein&quot;,
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;kontaktlos Bezahlen&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Einige Kreditkarten bieten Ihnen die Möglichkeit kontaktlos zu bezahlen, das heißt Sie können ohne die Eingabe Ihrer Geheimzahl oder Unterschrift bis zu einem Einkaufswert von 25 € bezahlen.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;ja&quot;,
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Videoident&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Vor Ausstellung der Kreditkarte benötigt der Anbieter in der Regel eine Legitimierung (Identitätsnachweis). Dazu bieten einige Banken das Videoident Verfahren an, bei dem die Bestätigung per Video-Telefonat bequem von zu Hause aus durchgeführt werden kann.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;ja&quot;,
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Digitale Unterschrift&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;In der Regel muss ein Kreditkartenantrag unterschrieben werden und an die Bank zurückgesendet werden. Durch das neue QES-Verfahren (digitale Unterschrift) haben Sie die Möglichkeit direkt nach Ihrer Videolegitimierung den Vertrag digital zu unterschreiben.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;ja&quot;,
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Rechnungsausgleich&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Der Rechnungsausgleich beschreibt, wie die Kreditkartenrechnung beglichen werden kann. Entweder kann die Kreditkartenrechnung per Lastschrift vom Girokonto oder per Überweisung ausgeglichen werden. Außerdem kann man bei manchen Banken einen Kredit in Anspruch nehmen und die Rechnung in Raten bezahlen. Die vereinbarte Rate wird dann monatlich vom Girokonto eingezogen (Vorsicht: es fallen dabei Sollzinsen an!). Bei Prepaidkarten gibt es keinen Rechnungsausgleich, da die Karte vor Nutzung mit Geldguthaben aufgeladen werden muss.&quot;
+                        }
+                      },
+                      &quot;billingAdjustment&quot; : {
+                        &quot;values&quot; : [ &quot;100% Lastschrift möglich, Teilzahlung voreingestellt&quot; ],
+                        &quot;info&quot; : &quot;3,5 % Lastschrift mind. 50 €. Ihren Rückzahlungsbetrag können Sie (gilt auch für bestehende Barclaycard Visa Karteninhaber) jederzeit im Online-Banking oder in der App anpassen.  Bei einem Rechnungsausgleich von 100% fallen keine Sollzinsen an.&quot;
+                      },
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                },
+                &quot;productInformationSheet&quot; : &quot;https://finanzen.check24.de/accounts/product/creditcard/200007/productdetail.pdf&quot;
+              }
+            },
+            &quot;payment&quot; : {
+              &quot;tabName&quot; : &quot;Bezahlung&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;costOfPayment&quot; : {
+                    &quot;name&quot; : &quot;Kosten bei Bezahlung&quot;,
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Inland&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bezahlung mit Kreditkarte im Inland können unter Umständen umsatzabhängige Gebühren entstehen. In der Regel ist das Bezahlen mit  Kreditkarte im Inland kostenlos.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei\n-\nBeim Karteneinsatz in Casinobetrieben, Lotteriegesellschaften, Wettbüros und Wertpapierhandelsplattformen fallen 4% des Kartenumsatzes als Gebühren an.&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Euro-Zone&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bezahlung mit Kreditkarte in der Eurozone können unter Umständen umsatzabhängige Gebühren entstehen. In der Regel ist das Bezahlen mit Kreditkarte in der Eurozone kostenlos.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Fremdwährung innerhalb EU&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bezahlung mit Kreditkarte in Fremdwährung innerhalb der EU verlangen einige Anbieter eine Gebühr.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Fremdwährung außerhalb EU/Weltweit&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bezahlung mit Kreditkarte außerhalb der EU verlangen einige Anbieter eine Gebühr.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  },
+                  &quot;mobilePayment&quot; : {
+                    &quot;name&quot; : &quot;Mobiles Bezahlen&quot;,
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Apple Pay&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;&lt;h3&gt;Apple Pay&lt;/h3&gt;Diese Kreditkarte können Sie bei Apple Pay (Bezahldienst von Apple) einbinden. Somit haben Sie die Möglichkeit Ihr iPhone zum Bezahlen Ihrer Einkäufe zu nutzen. Die mit Ihrem iPhone bezahlten Umsätze werden dann mit Ihrer Kreditkarte abgerechnet.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Verfügbar&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Google Pay&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;&lt;h3&gt;Google Pay&lt;/h3&gt;Die Kreditkarte können Sie bei Google Pay (Bezahldienst von Google) einbinden. Somit haben Sie die Möglichkeit Ihr Smartphone zum Bezahlen Ihrer Einkäufe zu nutzen. Die mit Ihrem Smartphone bezahlten Umsätze werden dann mit Ihrer Kreditkarte abgerechnet.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Verfügbar&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                }
+              }
+            },
+            &quot;cashWithdrawal&quot; : {
+              &quot;tabName&quot; : &quot;Bargeld&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;costOfAtm&quot; : {
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Inland&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bargeldabhebung mit Kreditkarte im Inland verlangen einige Anbieter eine Gebühr. Die Höhe der Gebühr ist in der Regel ein prozentualer Anteil des Abhebebetrags oder eine Mindestgebühr.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei (Bargeldabhebungen sind erst ab einen Betrag von 50€ möglich. Fremdwährungen sind ausgenommen.)&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Euro-Zone&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bargeldabhebung mit Kreditkarte innerhalb der Eurozone verlangen einige Anbieter eine Gebühr. Die Höhe der Gebühr ist in der Regel ein prozentualer Anteil des Abhebebetrags oder eine Mindestgebühr.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei (Bargeldabhebungen sind erst ab einen Betrag von 50€ möglich. Fremdwährungen sind ausgenommen.)&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Fremdwährung innerhalb EU&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bargeldabhebung mit Kreditkarte in Fremdwährung außerhalb der EU verlangen einige Anbieter eine Gebühr. Die Höhe der Gebühr ist in der Regel ein prozentualer Anteil des Abhebebetrags oder eine Mindestgebühr.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Fremdwährung außerhalb EU/Weltweit&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei Bargeldabhebung mit Kreditkarte in Fremdwährung außerhalb der EU verlangen einige Anbieter eine Gebühr. Die Höhe der Gebühr ist in der Regel ein prozentualer Anteil des Abhebebetrags oder eine Mindestgebühr.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Gebührenfrei&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                }
+              }
+            },
+            &quot;fees&quot; : {
+              &quot;tabName&quot; : &quot;Gebühren&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;feeDetails&quot; : {
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Jahresgebühr 1. Jahr&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Banken verlangen eine jährliche Gebühr, unabhängig von der Kartennutzung, für die Bereitstellung der Kreditkarte.&quot;
+                        }
+                      },
+                      &quot;ccValue&quot; : {
+                        &quot;value&quot; : &quot;0,- €&quot;
+                      },
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Jahresgebühr ab dem 2. Jahr&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Banken verlangen eine jährliche Gebühr, unabhängig von der Kartennutzung, für die Bereitstellung der Kreditkarte. Gegebenenfalls wird diese Gebühr teilweise auch erst ab dem 2. Jahr erhoben.&quot;
+                        }
+                      },
+                      &quot;ccValue&quot; : {
+                        &quot;value&quot; : &quot;0,- €&quot;
+                      },
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;eff. Jahreszins&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Sofern Sie Ihre Kreditkartenumsätze nicht innerhalb des Zahlungsziels begleichen, werden für den ausstehenden Betrag Zinsen fällig. Das Zahlungsziel kann z.B. sieben Tage nach Erhalt der Monatsabrechnung sein.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;18,38%&quot;,
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                }
+              }
+            },
+            &quot;additionalInfoAndBonus&quot; : {
+              &quot;tabName&quot; : &quot;Weitere Infos &amp; Bonus&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;bonus&quot; : {
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;max. Haftung&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Die maximale Haftung gibt an, bis zu welchem Betrag Sie bei einem Kreditkartenmissbrauch selbst haften.&quot;
+                        }
+                      },
+                      &quot;ccValue&quot; : {
+                        &quot;value&quot; : &quot;50,- €&quot;,
+                        &quot;hint&quot; : &quot;&quot;
+                      },
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Guthabenzins&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Einige Banken vergüten Guthaben auf dem Kreditkartenkonto mit einem variablen Guthabenszins.&quot;
+                        }
+                      },
+                      &quot;ccValue&quot; : {
+                        &quot;value&quot; : &quot;0,00%&quot;,
+                        &quot;hint&quot; : &quot;&quot;
+                      },
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Schufaprüfung&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Einige Kreditkartenanbieter vergeben die Kreditkarte erst nach erfolgreicher Bonitätsprüfung durch die Schufa. Die Schufa überprüft dabei unter anderem Ihre Zahlungsfähigkeit.&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;ja&quot;,
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Partnerkarte&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Banken bieten eine Partnerkarte (Zweitkarte) für beispielsweise den Ehe- oder Lebenspartner an. Die Abrechnung erfolgt dann über die Hauptkarte. Für die Bereitstellung einer Partnerkarte werden teilweise jährliche Gebühren fällig. Zudem können weitere Bedingungen an die Vergabe der Partnerkarte geknüpft sein (z.B. ein Mindestalter).&quot;
+                        }
+                      },
+                      &quot;ccValue&quot; : {
+                        &quot;value&quot; : &quot;0,- €&quot;,
+                        &quot;hint&quot; : &quot;Optional bis zu 3 Partnerkarten gebührenfrei - Eine Partnerkarte kann im Nachgang bei der Bank für Personen ab 18 Jahren beantragt werden&quot;
+                      },
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Extra Allgemein&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Einige Kreditkarten haben teilweise Besonderheiten, Vorteile oder weitere Extras&quot;
+                        }
+                      },
+                      &quot;value&quot; : &quot;Für getätigte Transaktionen können bis zu zwei Monate keine Zinsen anfallen. Ebenfalls ist die Rückzahlung in  Teilbeträgen zum genannten eff. Jahreszins möglich.\nZusätzlich bietet die Karte eine flexible Finanzierungs- und Rückzahlungsoption in Form des Barclaycard Ratenkaufes.\n&lt;br&gt;\nBei Umsätzen ab 95 € möglich: monatliche Rückzahlungsoption „Ratenkauf“ für Käufe Rechnungen und Überweisungen, derzeit mit 8,99% Jahreszins (eff. 9,37 %). Effektiver Jahreszins für sonstige Rückzahlungen in Teilbeträgen ohne Zahlplan 18,38 %. Bei 3 Monaten Laufzeit und Ausgaben unter 500 Euro sogar zu 0% Zinsen. Die Einrichtung dieser Rückzahlungsoption setzt eine ordnungsgemäße Führung des Barclaycard Kontos voraus. Barclaycard behält sich vor, die Konditionen zu ändern.\n&lt;br&gt;\nSie können auf Ihr Kreditkartenkonto Guthaben von ihrem eigenen Girokonto überweisen, um so den Verfügungsrahmen zu erhöhen.\n&lt;br&gt;\nEine Geldabhebung am Automaten ist erst ab 50 € möglich. Das Tageslimit für Bargeldabhebungen liegt bei max. 500 €&quot;,
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Cashback&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten bieten ein besonderes Cashback-System. Dabei erhält der Kunde eine anteilige rückwirkende Erstattung beim Einkauf über einen Cashback-Anbieter und Bezahlung mit der entsprechenden Kreditkarte. Die Erstattung orientiert sich dabei meist in prozentualer Höhe des getätigten Umsatzes.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Bonuspunkte System&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten bieten ein exklusives Bonuspunkte System, bei dem Sie durch den Einsatz Ihrer Kreditkarte Bonuspunkte sammeln können, welche Sie später gegen Prämien oder Gutscheine einlösen können.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Rabatte&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten bieten exklusive Rabatte, wie beispielsweise bei Bezahlung oder Buchung mit der Kreditkarte bei Kooperationspartnern.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;5% Rückvergütung auf Reisen bei der Professional Travel GmbH&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Bonus&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Einige Kreditkartenanbieter belohnen Kunden bei Vertragsabschluss oder bei gleichzeitiger Eröffnung eines Girokontos der jeweiligen Bank durch einen extra Bonus.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;Neukunden, die im Aktionszeitraum eine Barclaycard Visa über CHECK24 beantragen, bekommen exklusiv bei CHECK24 einen Bonus in Höhe von 75 €, wenn die Legitimierung über Videoident erfolgt ist, der Antrag digital unterschrieben und die Kreditkarte innerhalb von vier Wochen nach Kontoeröffnung einmalig zur Bezahlung eingesetzt wurde. Als Neukunde gilt, wer in den vergangenen 12 Monaten kein Barclaycard Kunde war. \nDie Auszahlung erfolgt durch Barclaycard innerhalb von 2 Wochen nach Erfüllung der Bonusbedingungen (nach Ihrem ersten Umsatz mit Ihrer neuen Barclaycard Visa) auf das Kreditkartenkonto.&quot;,
+                        &quot;benefitType&quot; : &quot;POSITIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                }
+              }
+            },
+            &quot;insurance&quot; : {
+              &quot;tabName&quot; : &quot;Versicherung&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;insurance&quot; : {
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Auslands-Krankenvers.&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Auslands-Krankenversicherung beinhaltet, schützt diese vor unvorhergesehenen Krankheitskosten während einer Reise.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Reise-Unfallvers.&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Reise-Unfallversicherung beinhaltet, schützt diese bei unvorhergesehenen Unfallfolgekosten während einer Reise.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Reise-Rücktrittsvers.&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Reise-Rücktrittsversicherung beinhaltet, deckt diese Stornokosten ab, sofern eine Reise unerwartet abgesagt werden muss.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Reisegepäck-Vers.&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Reisegepäck-Versicherung beinhaltet, erstattet diese u.a. die Kosten von abhandengekommenen oder beschädigten Gepäckstücken.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Verkehrsmittelunfall-Vers.&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Verkehrsmittelunfall-Versicherung beinhaltet, hilft diese bei Unfällen mit einem öffentlichen Verkehrsmittel.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Autoschutzbrief&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist ein Autoschutzbrief beinhaltet, bietet dieser Hilfe im Falle einer Panne, eines Unfalls oder bei Diebstahl des KFZ.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Rechtsschutz für Mietwagen&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist ein Rechtsschutz für Mietwagen beinhaltet, hilft dieser bei Rechtsstreitigkeiten im Zusammenhang mit dem Mietwagen.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Haftpflichtvers. für Mietwagen&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Haftplichtversicherung für Mietwagen beinhaltet, deckt diese Schäden ab, die nicht am Mietwagen oder an Personen und Gegenständen im Mietwagen enstanden sind.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Vollkaskovers. für Mietwagen&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten sind mit besonderen Versicherungsleistungen ausgestattet. Ist eine Vollkaskoversicherung für Mietwagen beinhaltet, deckt diese Schäden am Mietwagen durch selbstverschuldetes Verhalten des Fahrers ab.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                }
+              }
+            },
+            &quot;travel&quot; : {
+              &quot;tabName&quot; : &quot;Travel&quot;,
+              &quot;tabContent&quot; : {
+                &quot;sections&quot; : {
+                  &quot;travel&quot; : {
+                    &quot;rows&quot; : [ {
+                      &quot;label&quot; : &quot;Hotel-Reservierung&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Mit manchen Kreditkarten genießen Sie besondere Leistungen wie z.B. einen kostenlosen Hotel-Buchungs-Service.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Flug-Reservierung&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Mit manchen Kreditkarten genießen Sie besondere Leistungen wie z.B. einen kostenlosen Flug-Buchungs-Service.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Ticket-Reservierung&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Bei manchen Anbietern genießen Sie besondere Leistungen wie z.B. kostenlose Ticket-Reservierung.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Dokumenten Service&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten bieten besondere Leistungen, wie beispielsweise den Dokumenten Service. Dieser hilft bei Verlust oder Diebstahl persönlicher Dokumente, bei der Sperrung und Wiederbeschaffung von Ersatzdokumenten, wie beispielsweise Personalausweis oder Kreditkarte.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;Loungezugang&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten bieten besondere extra Leistungen wie beispielsweise den Zugang zu einem Loungebereich des Kreditkartenanbieters an Flughäfen. Diese können dann kostenlos genutzt werden.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    }, {
+                      &quot;label&quot; : &quot;24 Stunden-Hotline&quot;,
+                      &quot;toolTip&quot; : {
+                        &quot;icon&quot; : &quot;QUESTIONMARK_GREY&quot;,
+                        &quot;overlay&quot; : {
+                          &quot;text&quot; : &quot;Manche Kreditkarten bieten eine 24-Stunden-Hotline an, die Ihnen beispielsweise bei Verlust der Kreditkarte oder bei der Beschaffung einer Ersatzkreditkarte behilflich ist.&quot;
+                        }
+                      },
+                      &quot;benefits&quot; : [ {
+                        &quot;value&quot; : &quot;&quot;,
+                        &quot;benefitType&quot; : &quot;NEGATIVE&quot;
+                      } ],
+                      &quot;featuredDetail&quot; : false
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        }</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-606386d7-b6e6-471a-93dd-c7885c2a53c6">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-606386d7-b6e6-471a-93dd-c7885c2a53c6" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code is 200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Content-Type is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Status code name has string</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center bg-danger">1</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Response time is less than 400ms</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Body matches string</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">4</td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row ">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="w-45 text-nowrap ">Status code name has string</td>
+                                                                <td class="w-55"><pre><code >expected response to have status reason &#x27;OK&#x27; but got &#x27;200&#x27;</code></pre></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-a7996a63-1d46-4d81-a96f-7a9c8efeca88" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-danger iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88" aria-expanded="false" aria-controls="collapse" id="requests-a7996a63-1d46-4d81-a96f-7a9c8efeca88" class="collapsed text-white z-block">
+                    Iteration: 1 - VerifyResponsewithInvalidResource <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88" class="collapse" aria-labelledby="requests-a7996a63-1d46-4d81-a96f-7a9c8efeca88">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://finanzen.check24.de/accounts/r/frs/productInfo/kreditkarte/abcd" target="_blank">https://finanzen.check24.de/accounts/r/frs/productInfo/kreditkarte/abcd</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 404 - 404</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 57ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 62B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-danger" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>80 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td>PostmanRuntime/7.26.10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td>*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td>no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td>24ffce6e-2d38-41b0-aa24-c07a847ddec5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td>finanzen.check24.de</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td>gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td>keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">date</td>
+                                                    <td>Thu, 22 Apr 2021 10:35:11 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">server</td>
+                                                    <td>Apache</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">vary</td>
+                                                    <td>User-Agent</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">transfer-encoding</td>
+                                                    <td>chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">content-type</td>
+                                                    <td>application/json;charset&#x3D;UTF-8</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-18bafc19-53fc-4122-be22-f99399d190ef" class="prettyPrint">{
+          &quot;statusCode&quot; : &quot;404&quot;,
+          &quot;message&quot; : &quot;HTTP 404 Not Found&quot;
+        }</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-18bafc19-53fc-4122-be22-f99399d190ef">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-18bafc19-53fc-4122-be22-f99399d190ef" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code is 404</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Content-Type is present</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Status code name has string</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center bg-danger">1</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Response time is less than 400ms</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Body matches string</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">4</td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row ">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="w-45 text-nowrap ">Status code name has string</td>
+                                                                <td class="w-55"><pre><code >expected response to have status reason &#x27;Not Found&#x27; but got &#x27;404&#x27;</code></pre></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-526a77a5-222a-4a07-b337-ed667b12f5d4" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-danger iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-526a77a5-222a-4a07-b337-ed667b12f5d4" aria-expanded="false" aria-controls="collapse" id="requests-526a77a5-222a-4a07-b337-ed667b12f5d4" class="collapsed text-white z-block">
+                    Iteration: 1 - VerifyResponseForNoContent <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-526a77a5-222a-4a07-b337-ed667b12f5d4" class="collapse" aria-labelledby="requests-526a77a5-222a-4a07-b337-ed667b12f5d4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://finanzen.check24.de/accounts/r/frs/productInfo/kreditkarte/5456" target="_blank">https://finanzen.check24.de/accounts/r/frs/productInfo/kreditkarte/5456</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 204 - 204</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 46ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 0B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-danger" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>75 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td>PostmanRuntime/7.26.10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td>*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td>no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td>e3fb7007-6268-418d-a7be-08f3e5d0c49c</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td>finanzen.check24.de</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td>gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td>keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">date</td>
+                                                    <td>Thu, 22 Apr 2021 10:35:11 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">server</td>
+                                                    <td>Apache</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">content-length</td>
+                                                    <td>0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">cache-control</td>
+                                                    <td>max-age&#x3D;0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">expires</td>
+                                                    <td>Thu, 22 Apr 2021 10:35:11 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">vary</td>
+                                                    <td>User-Agent</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                    <h5 class="alert alert-success text-uppercase text-center">No Response Body for this request</h5>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table id="myTable-4db6cff4-cdef-4ce0-8c12-38ece0b6a969" class="table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code is 204</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Status code name has string</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center bg-danger">1</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Response time is less than 400ms</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Body matches string</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">3</td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row ">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="w-45 text-nowrap ">Status code name has string</td>
+                                                                <td class="w-55"><pre><code >expected response to have status reason &#x27;No Content&#x27; but got &#x27;204&#x27;</code></pre></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('#myTable-606386d7-b6e6-471a-93dd-c7885c2a53c6').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+$(document).ready( function () {
+    $('#myTable-18bafc19-53fc-4122-be22-f99399d190ef').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+$(document).ready( function () {
+    $('#myTable-4db6cff4-cdef-4ce0-8c12-38ece0b6a969').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Show/Hide The Folders -->
+
+<script>
+$('#openAll').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#folder-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0').removeClass('collapsed')
+            $('#folder-collapse-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0').addClass('show')
+        $('#openAll').html("Collapse Folders");
+        break;
+    case 2:
+            $('#folder-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0').addClass('collapsed')
+            $('#folder-collapse-42ecd785-5a9e-4916-bacd-c7dc2e71c53d-iteration-0').removeClass('show')
+        $('#openAll').html("Expand Folders");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('collapsed')
+            $('#collapse-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('collapsed')
+            $('#requests-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('show')
+            $('#collapse-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('show')
+            $('#requests-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('collapsed')
+            $('#collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('collapsed')
+            $('#requests-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('show')
+            $('#collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('show')
+            $('#requests-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('collapsed')
+            $('#collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('collapsed')
+            $('#requests-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('show')
+            $('#collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('collapsed')
+            $('#collapse-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('collapsed')
+            $('#requests-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('show')
+            $('#collapse-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('show')
+            $('#requests-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('collapsed')
+            $('#collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('collapsed')
+            $('#requests-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('show')
+            $('#collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('show')
+            $('#requests-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('collapsed')
+            $('#collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('collapsed')
+            $('#requests-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('show')
+            $('#collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('collapsed')
+            $('#skipped-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('collapsed')
+            $('#skipped-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('show')
+            $('#skipped-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('show')
+            $('#skipped-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('collapsed')
+            $('#skipped-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('collapsed')
+            $('#skipped-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('show')
+            $('#skipped-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('show')
+            $('#skipped-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('collapsed')
+            $('#skipped-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('collapsed')
+            $('#skipped-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('show')
+            $('#skipped-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('collapsed')
+            $('#skipped-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('collapsed')
+            $('#skipped-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('show')
+            $('#skipped-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('show')
+            $('#skipped-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('collapsed')
+            $('#skipped-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('collapsed')
+            $('#skipped-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('show')
+            $('#skipped-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('show')
+            $('#skipped-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('collapsed')
+            $('#skipped-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('collapsed')
+            $('#skipped-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('show')
+            $('#skipped-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#fails-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('collapsed')
+            $('#fails-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('collapsed')
+            $('#fails-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('show')
+            $('#fails-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('show')
+            $('#fails-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('collapsed')
+            $('#fails-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('collapsed')
+            $('#fails-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('show')
+            $('#fails-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('show')
+            $('#fails-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('collapsed')
+            $('#fails-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('collapsed')
+            $('#fails-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('show')
+            $('#fails-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('show')
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+            $('#fails-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('collapsed')
+            $('#fails-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').addClass('collapsed')
+            $('#fails-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('show')
+            $('#fails-collapse-241fb16f-821a-4321-b7d8-6afee5129e97').removeClass('show')
+            $('#fails-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('collapsed')
+            $('#fails-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').addClass('collapsed')
+            $('#fails-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('show')
+            $('#fails-collapse-a7996a63-1d46-4d81-a96f-7a9c8efeca88').removeClass('show')
+            $('#fails-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('collapsed')
+            $('#fails-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').addClass('collapsed')
+            $('#fails-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('show')
+            $('#fails-collapse-526a77a5-222a-4a07-b337-ed667b12f5d4').removeClass('show')
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);            
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAll").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "none";
+    
+    
+    document.getElementById("showOnlyFailures").style.display = "none";
+    document.getElementById("openAllFailed").style.display = "none";
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAll").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "block";
+    
+    document.getElementById("showOnlyFailures").style.display = "block";
+    document.getElementById("openAllFailed").style.display = "block";
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // set display for all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'block';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode((i + 1)));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+      //set display to none for all except row
+      let allItems = document.querySelectorAll('[class*=iteration-]:not(.row)');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+    
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id + ':not(.row)');
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+    menu.appendChild(li);
+  }
+
+  //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+
+    $("#iteration-0").removeClass('itPassed').addClass('itFailed')
+    $("#iteration-0").removeClass('itPassed').addClass('itFailed')
+    $("#iteration-0").removeClass('itPassed').addClass('itFailed')
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+
+<script>
+$(document).ready(function(){
+    $(function() {
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$(document).ready(function(){
+  $("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+	  $("#showOnlyFailures").data("clickCount") ? $("#showOnlyFailures").click():null;
+      $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+<!-- Showing the Failed Interations -->
+
+<script>
+$(document).ready(function(){  
+  if($("#iterationList li.itFailed").length){
+	$("#showOnlyFailures").data("clickCount", 0);
+    $("#showOnlyFailures").on("click", function () {
+        let clickCount = $(this).data("clickCount")
+		$("#filterInput").val()!="" && clickCount==0 ? 
+		$("#filterInput").val('').trigger('input'): null;
+								
+        let selectedIteration = $('#iterationList li').filter(function () { 
+            return $(this).css('border-bottom').indexOf("solid") > -1 && $(this).hasClass('itFailed');
+        });
+        selectedIteration.length || clickCount ? null : $("#iterationList li.itFailed")[0].click()
+        $("#iterationList li.itPassed").each(function () {
+          $(this).toggle();
+         });
+        $("div.bg-success [id*=requests]").parents('[class^="row iteration-"]').each(function () {
+          $(this).toggle();
+         });
+        clickCount = clickCount ? 0 : ++clickCount;
+        clickCount ? $("#showOnlyFailures").html("Show All Iterations") : $("#showOnlyFailures").html("Show Failed Iterations");
+        $(this).data("clickCount", clickCount)     
+    });
+  }
+});
+</script>
+
+<!-- Set The Theme Of The Report -->
+
+<script>
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.body.className = themeName;
+        }
+
+        function toggleTheme() {
+            if (localStorage.getItem('theme') === 'theme-light') {
+                setTheme('theme-dark');
+            } else {
+                setTheme('theme-light');
+            }
+        }
+
+        (function () {
+            if (localStorage.getItem('theme') === 'theme-light') {
+                setTheme('theme-light');
+                document.getElementById('slider').checked = false;
+            } else {
+                setTheme('theme-dark');
+                document.getElementById('slider').checked = true;
+            }
+        })();
+</script>

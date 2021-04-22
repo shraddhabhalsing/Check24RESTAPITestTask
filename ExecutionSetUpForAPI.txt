@@ -1,0 +1,13 @@
+Execution setup
+
+Step 1: Install node.js
+       
+Step 2: Verify version of node using command 'node -v'
+        
+Step 3: Verify version of node using command 'npm -v'
+
+Step 4:Install newman using command 'npm install -g newman'
+
+Step 5:Run command newman run Check24APITest.postman_collection.json
+
+Step 6:Verify results on console(I have also provided the HTML report for API testing using newman)
